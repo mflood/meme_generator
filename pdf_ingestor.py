@@ -1,4 +1,12 @@
 
+from ingestor_interface import IngestorInterface
+from models import QuoteModel
+
+from typing import List
+
+
+from ingestor_interface import IngestorInterface
+
 
 from ingestor_interface import IngestorInterface
 
@@ -8,6 +16,10 @@ class PdfIngestor(IngestorInterface):
     @classmethod    
     def can_ingest(cls, path: str) -> bool:
         return path.lower().endswith(".pdf")
+
+    @classmethod
+    def parse(cls, path: str) -> List[QuoteModel]:
+        return []
 
 
 if __name__ == "__main__":
