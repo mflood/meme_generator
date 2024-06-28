@@ -1,4 +1,5 @@
 
+import os
 
 from typing import List
 from models import QuoteModel
@@ -8,7 +9,6 @@ from txt_ingestor import TxtIngestor
 from csv_ingestor import CsvIngestor
 from pdf_ingestor import PdfIngestor
 from docx_ingestor import DocxIngestor
-
 
 class Ingestor(IngestorInterface):
 
@@ -23,7 +23,11 @@ class Ingestor(IngestorInterface):
         
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
-        return [QuoteModel(body="hello", author="Matthew")]
+        for ingestor in Ingestor.ingestors:
+            if ingestor.can_ingest(path):
+                return ingestor.parse(path)
+        
+        return [] 
  
 if __name__ == "__main__":
 
