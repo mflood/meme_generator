@@ -1,16 +1,30 @@
 import random
+from typing import List
 import os
 import requests
 from flask import Flask, render_template, abort, request
 
-# @TODO Import your Ingestor and MemeEngine classes
 
 from ingestor import Ingestor
-from meme_engine import MemeEngine
+from meme_generator.meme_engine import MemeEngine
 
 app = Flask(__name__)
 
-meme = MemeEngine('./static')
+meme = MemeEngine.make_default_engine(output_directory='./static')
+
+
+def is_image_file(filename):
+    image_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'}
+    return any(filename.lower().endswith(ext) for ext in image_extensions)
+
+def find_image_files(directory: str) -> List[str]:
+    found_files = []
+    for root, _, files in os.walk(directory):
+        files = [os.path.join(root, f) for f in files]
+        image_files = [f for f in files if is_image_file(f)]
+        found_files.extend(image_files)
+    return found_files
+
 
 
 def setup():
@@ -27,28 +41,21 @@ def setup():
     quotes = []
     for path in quote_files:
         if Ingestor.can_ingest(path):
-            quote = Ingestor.parse(path)
-            quotes.append(quote)
+            file_quotes = Ingestor.parse(path)
+            quotes.extend(file_quotes)
 
     images_path = "./_data/photos/dog/"
 
     # TODO: Use the pythons standard library os class to find all
     # images within the images images_path directory
 
-    image_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'}
-
-    def is_image_file(filename):
-        return any(filename.lower().endswith(ext) for ext in image_extensions)
 
     # Get all image files in the directory
-    imgs = [f for f in os.listdir(images_path) if is_image_file(f)]
-
-
+    imgs = find_image_files(directory=images_path)
     return quotes, imgs
 
 
 quotes, imgs = setup()
-
 
 @app.route('/')
 def meme_rand():
