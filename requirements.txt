@@ -1,0 +1,10 @@
+pillow
+requests
+black 
+mypy
+pep8
+flask
+flake8
+pylint
+isort
+python-docx
