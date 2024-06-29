@@ -1,4 +1,4 @@
-from ingestor_interface import IngestorInterface
+from ingest.ingestor_interface import IngestorInterface
 from docx import Document
 from models import QuoteModel
 
@@ -26,10 +26,9 @@ class DocxIngestor(IngestorInterface):
                     try:
                         # Split only at the last ' - '
                         body, author = text.rsplit('-', 1)  
-                        body = body.strip()
-                        author = author.strip()
                         quote = QuoteModel(
-                            body=body, author=author,
+                            body=body.strip(),
+                            author=author.strip(),
                         )
                         quotes.append(quote)
                     except ValueError:

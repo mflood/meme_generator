@@ -1,14 +1,8 @@
 
-from ingestor_interface import IngestorInterface
+from ingest.ingestor_interface import IngestorInterface
 from models import QuoteModel
 
 from typing import List
-
-
-from ingestor_interface import IngestorInterface
-
-
-from ingestor_interface import IngestorInterface
 
 
 class PdfIngestor(IngestorInterface):

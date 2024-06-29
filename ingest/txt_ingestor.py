@@ -1,12 +1,8 @@
 
-from ingestor_interface import IngestorInterface
+from ingest.ingestor_interface import IngestorInterface
 from models import QuoteModel
 
 from typing import List
-
-
-from ingestor_interface import IngestorInterface
-
 
 class TxtIngestor(IngestorInterface):
 
@@ -16,8 +12,18 @@ class TxtIngestor(IngestorInterface):
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
-        return []
 
+        quote_list = []
+        with open(path, "r", encoding="utf-8") as handle:
+            for row in handle:
+                body, author = row.rsplit('-', 1)  
+                quote = QuoteModel(
+                    body=body.strip(), 
+                    author=author.strip(),
+                )
+                quote_list.append(quote)
+
+        return quote_list
 
 if __name__ == "__main__":
     print(TxtIngestor.can_ingest("myfile.txt"))

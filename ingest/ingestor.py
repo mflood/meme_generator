@@ -4,11 +4,11 @@ import os
 from typing import List
 from models import QuoteModel
 
-from ingestor_interface import IngestorInterface
-from txt_ingestor import TxtIngestor
-from csv_ingestor import CsvIngestor
-from pdf_ingestor import PdfIngestor
-from docx_ingestor import DocxIngestor
+from ingest.ingestor_interface import IngestorInterface
+from ingest.txt_ingestor import TxtIngestor
+from ingest.csv_ingestor import CsvIngestor
+from ingest.pdf_ingestor import PdfIngestor
+from ingest.docx_ingestor import DocxIngestor
 
 class Ingestor(IngestorInterface):
 
