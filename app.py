@@ -5,38 +5,19 @@ import requests
 from flask import Flask, render_template, abort, request
 
 
-from ingestor import Ingestor
+from utils.file import find_image_files, find_files
+from ingest.ingestor import Ingestor
 from meme_generator.meme_engine import MemeEngine
 
 app = Flask(__name__)
 
 meme = MemeEngine.make_default_engine(output_directory='./static')
 
-
-def is_image_file(filename):
-    image_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'}
-    return any(filename.lower().endswith(ext) for ext in image_extensions)
-
-def find_image_files(directory: str) -> List[str]:
-    found_files = []
-    for root, _, files in os.walk(directory):
-        files = [os.path.join(root, f) for f in files]
-        image_files = [f for f in files if is_image_file(f)]
-        found_files.extend(image_files)
-    return found_files
-
-
-
 def setup():
     """ Load all resources """
 
-    quote_files = ['./_data/DogQuotes/DogQuotesTXT.txt',
-                   './_data/DogQuotes/DogQuotesDOCX.docx',
-                   './_data/DogQuotes/DogQuotesPDF.pdf',
-                   './_data/DogQuotes/DogQuotesCSV.csv']
-
-    # TODO: Use the Ingestor class to parse all files in the
-    # quote_files variable
+    quote_files = find_files(directory='./_data/DogQuotes')
+    print(quote_files)
 
     quotes = []
     for path in quote_files:
@@ -44,20 +25,15 @@ def setup():
             file_quotes = Ingestor.parse(path)
             quotes.extend(file_quotes)
 
-    images_path = "./_data/photos/dog/"
-
-    # TODO: Use the pythons standard library os class to find all
-    # images within the images images_path directory
-
-
-    # Get all image files in the directory
+    # Get all image files in the photos directory
+    images_path = "./_data/photos"
     imgs = find_image_files(directory=images_path)
     return quotes, imgs
 
 
 quotes, imgs = setup()
 
-@app.route('/')
+@app.route('/home')
 def meme_rand():
     """ Generate a random meme """
 
