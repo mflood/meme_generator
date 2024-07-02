@@ -1,6 +1,6 @@
 
 from ingest.ingestor_interface import IngestorInterface
-from models import QuoteModel
+from ingest.models import QuoteModel
 
 from typing import List
 
@@ -15,10 +15,12 @@ class TxtIngestor(IngestorInterface):
 
         quote_list = []
         with open(path, "r", encoding="utf-8") as handle:
-            for row in handle:
+            for idx, row in enumerate(handle):
+                if '-' not in row:
+                    continue
                 body, author = row.rsplit('-', 1)  
                 quote = QuoteModel(
-                    body=body.strip(), 
+                    body=body.strip().strip('"'), 
                     author=author.strip(),
                 )
                 quote_list.append(quote)

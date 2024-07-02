@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from models import QuoteModel
+from ingest.models import QuoteModel
 
 class IngestorInterface(ABC):
 

@@ -1,6 +1,6 @@
 from ingest.ingestor_interface import IngestorInterface
 from docx import Document
-from models import QuoteModel
+from ingest.models import QuoteModel
 
 from typing import List
 
@@ -21,18 +21,19 @@ class DocxIngestor(IngestorInterface):
         # Iterate over each paragraph in the document
         for paragraph in document.paragraphs:
             text = paragraph.text.strip()
-            if text:
-                if ' - ' in text:
-                    try:
-                        # Split only at the last ' - '
-                        body, author = text.rsplit('-', 1)  
-                        quote = QuoteModel(
-                            body=body.strip(),
-                            author=author.strip(),
-                        )
-                        quotes.append(quote)
-                    except ValueError:
-                        print(f"Could not parse: {text}")
+
+            if not text or ' - ' not in text:
+                continue
+            try:
+                # Split only at the last ' - '
+                body, author = text.rsplit('-', 1)  
+                quote = QuoteModel(
+                    body=body.strip().strip('"'),
+                    author=author.strip(),
+                )
+                quotes.append(quote)
+            except ValueError:
+                print(f"Could not parse: {text}")
         return quotes
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 
 import csv
 from ingest.ingestor_interface import IngestorInterface
-from models import QuoteModel
+from ingest.models import QuoteModel
 
 from typing import List
 
@@ -19,8 +19,8 @@ class CsvIngestor(IngestorInterface):
             reader = csv.DictReader(handle)
             for row in reader:
                 quote = QuoteModel(
-                    body=row['body'],
-                    author=row['author'],
+                    body=row['body'].strip().strip('"'),
+                    author=row['author'].strip(),
                 )
                 quote_list.append(quote)
         return quote_list

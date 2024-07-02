@@ -2,7 +2,7 @@
 import os
 
 from typing import List
-from models import QuoteModel
+from ingest.models import QuoteModel
 
 from ingest.ingestor_interface import IngestorInterface
 from ingest.txt_ingestor import TxtIngestor
@@ -25,8 +25,10 @@ class Ingestor(IngestorInterface):
     def parse(cls, path: str) -> List[QuoteModel]:
         for ingestor in Ingestor.ingestors:
             if ingestor.can_ingest(path):
+                print(f"using {ingestor} to parse {path}")
                 return ingestor.parse(path)
         
+        raise Exception()
         return [] 
  
 if __name__ == "__main__":
