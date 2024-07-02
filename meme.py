@@ -5,11 +5,11 @@ import random
 # @TODO Import your Ingestor and MemeEngine classes
 from meme_engine import MemeEngine
 from ingestor import Ingestor
-from models import QuoteModel
+from ingest.models import QuoteModel
 
 
 def generate_meme(path=None, body=None, author=None):
-    """ Generate a meme given an path and a quote """
+    """ Generate a meme given a path and a quote """
     img = None
     quote = None
 
@@ -59,3 +59,6 @@ if __name__ == "__main__":
     # Parse arguments
     args = parser.parse_args()
     print(generate_meme(args.path, args.body, args.author))
+
+
+# end

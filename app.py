@@ -7,19 +7,27 @@ from flask import Flask, render_template, abort, request
 
 from utils.file import find_image_files, find_files
 from ingest.ingestor import Ingestor
+from ingest.models import QuoteModel
 from meme_generator.meme_engine import MemeEngine
 
 app = Flask(__name__)
 
+
+OUTPUT_DIR = "./static"
 meme = MemeEngine.make_default_engine(output_directory='./static')
 
 def setup():
-    """ Load all resources """
+    """ Create output directory and Load all resources """
 
-    quote_files = find_files(directory='./_data/DogQuotes')
+    try:
+        os.mkdir(OUTPUT_DIR)
+    except FileExistsError:
+        pass
+
+    quote_files = find_files(directory='./_data/SimpleLines')
     print(quote_files)
 
-    quotes = []
+    quotes: List[QuoteModel] = []
     for path in quote_files:
         if Ingestor.can_ingest(path):
             file_quotes = Ingestor.parse(path)
@@ -33,7 +41,7 @@ def setup():
 
 quotes, imgs = setup()
 
-@app.route('/home')
+@app.route('/')
 def meme_rand():
     """ Generate a random meme """
 
