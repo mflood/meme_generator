@@ -6,8 +6,8 @@ from typing import List
 import requests
 from flask import Flask, abort, render_template, request
 
-from ingest.ingestor import Ingestor
-from ingest.models import QuoteModel
+from quote_engine.ingestor import Ingestor
+from quote_engine.models import QuoteModel
 from meme_generator.meme_engine import MemeEngine
 from utils.file import find_files, find_image_files
 
@@ -31,11 +31,10 @@ def setup():
 
     # Get all image files in the photos directory
     images_path = "./_data/photos"
-    image_files = find_image_files(directory=images_path)
+    image_files: List[str] = find_image_files(directory=images_path)
     return quotes, image_files
 
-
-quotes, imgs = setup()
+quotes, image_files = setup()
 
 
 @app.route("/")
@@ -44,15 +43,15 @@ def meme_rand():
 
     # @TODO:
     # Use the random python standard library class to:
-    # 1. select a random image from imgs array
+    # 1. select a random image from image_files array
     # 2. select a random quote from the quotes array
 
-    img = random.choice(imgs)
+    img = random.choice(image_files)
     quote = random.choice(quotes)
-    path = meme_engine.make_meme(
+    meme_output_path = meme_engine.make_meme(
         img_path=img, text=quote.body, author=quote.author
     )
-    return render_template("meme.html", path=path)
+    return render_template("meme.html", path=meme_output_path)
 
 
 @app.route("/create", methods=["GET"])
@@ -75,15 +74,15 @@ def meme_post():
         response.raise_for_status()
 
         with tempfile.TemporaryDirectory() as tmpdirname:
-            tmp_image_path = os.path.join(tmpdirname, image_name)
+            tmp_input_image_path = os.path.join(tmpdirname, image_name)
 
-            with open(tmp_image_path, "wb") as f:
+            with open(tmp_input_image_path, "wb") as f:
                 f.write(response.content)
 
-            path = meme_engine.make_meme(
-                img_path=tmp_image_path, text=body, author=author
+            meme_output_path = meme_engine.make_meme(
+                img_path=tmp_input_image_path, text=body, author=author
             )
-            return render_template("meme.html", path=path)
+            return render_template("meme.html", path=meme_output_path)
 
     except requests.RequestException as e:
         return f"An error occurred while downloading the image: {e}"
@@ -91,3 +90,5 @@ def meme_post():
 
 if __name__ == "__main__":
     app.run()
+
+
