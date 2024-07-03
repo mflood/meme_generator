@@ -19,6 +19,9 @@ def generate_random_image_path(directory: str) -> str:
     return os.path.join(directory, filename)  # Combine the directory and filename to create the full path
 
 
+
+    offset += draw.textbbox((0, 0), line, font=self._font)[3] - draw.textbbox((0, 0), line, font=self._font)[1]
+
 class MemeEngine():
 
     def __init__(self, output_directory: str, font: ImageFont.FreeTypeFont):
@@ -66,20 +69,39 @@ class MemeEngine():
 
         # Draw wrapped text
         for line in wrapped_text.split('\n'):
-            draw.text((margin, offset), line, font=self._font, fill='white')
-            offset += draw.textbbox((0, 0), line, font=self._font)[3] - draw.textbbox((0, 0), line, font=self._font)[1]
 
+            x, y = margin, offset
+
+            self.draw_text_with_outline(draw=draw, x=margin, y=offset, line=line)
+
+            # Get size and update offset
+            offset += draw.textbbox((0, 0), line, font=self._font)[3] - draw.textbbox((0, 0), line, font=self._font)[1]
 
 
         # Draw author
         offset += 10  # Additional space between quote and author
         margin += 40 # indent
-        draw.text((margin, offset), wrapped_author, font=self._font, fill='white')
+        self.draw_text_with_outline(draw=draw, x=margin, y=offset, line=wrapped_author)
 
         # Save image
         img_object.save(outpath)
         return outpath
-       
+
+    def draw_text_with_outline(self, draw: ImageDraw.ImageDraw, x: int, y: int, line: str):
+        """
+            return the height 
+        """
+        print(type(draw))
+        # Draw outline
+        draw.text((x - 1, y - 1), line, font=self._font, fill='black')
+        draw.text((x + 1, y - 1), line, font=self._font, fill='black')
+        draw.text((x - 1, y + 1), line, font=self._font, fill='black')
+        draw.text((x + 1, y + 1), line, font=self._font, fill='black')
+
+        # draw text
+        draw.text((x, y), line, font=self._font, fill='white')
+
+        
 
 
 
