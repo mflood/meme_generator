@@ -41,9 +41,9 @@ open http://127.0.0.1:5000
 
 ## Sub-Modules
 
-### ingest module
+### Quote Engine module
 
-The ingest sub-module defines the QuoteModel and Ingestor 
+The Quote Engine sub-module defines the QuoteModel and Ingestor 
 which provides the ability to parse QuoteModel data from 
 various file types including .csv, .pdf, .docx and .txt
 
@@ -56,8 +56,8 @@ various file types including .csv, .pdf, .docx and .txt
 
 ```
 from typing import List
-from ingest.ingestor import Ingestor
-from ingest.models import QuoteModel
+from quote_engine.ingestor import Ingestor
+from quote_engine.models import QuoteModel
 
 input_filepath = "_data/SimpleLines/SimpleLines.csv"
 if Ingestor.can_ingest(input_filepath):
