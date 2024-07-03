@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 
 OUTPUT_DIR = "./static"
-meme_engine = MemeEngine.make_default_engine(output_directory="./static")
+meme_engine = MemeEngine.make_default_engine(output_directory=OUTPUT_DIR)
 
 
 def setup():

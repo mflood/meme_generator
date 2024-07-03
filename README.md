@@ -67,6 +67,32 @@ for quote in quote_list:
     print(quote)
 ```
 
+### Meme Generator module
+
+The Meme Generator sub-module defines the MemeEngine, which
+takes an image and a qoute and creates a new image, resized, with
+the quote text overlaid.
+
+> Dependencies
+
+- PIL
+
+> Usage:
+
+```
+from meme_generator.meme_engine import MemeEngine
+
+meme_engine = MemeEngine.make_default_engine(output_directory="./static")
+
+meme_output_path = meme_engine.make_meme(
+    img_path="_data/photos/landscape/landscape_2.jpeg",
+    text="Waste no more time arguing about what a good man should be. Be one.",
+    author="Marcus Aurelius"
+)
+
+print(f"meme image generated at {meme_output_path}")
+
+```
 
 
 # Attributions
