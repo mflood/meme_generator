@@ -31,6 +31,18 @@ class Ingestor(IngestorInterface):
         raise Exception()
         return [] 
  
+    @classmethod
+    def parse_files(cls, path_list: List[str]) -> List[QuoteModel]:
+        quotes: List[QuoteModel] = []
+        for path in path_list:
+            if Ingestor.can_ingest(path):
+                file_quotes = Ingestor.parse(path)
+                quotes.extend(file_quotes)
+        unique_quotes = list(set(quotes))
+        return unique_quotes
+
+
+
 if __name__ == "__main__":
 
     print(Ingestor.can_ingest("myfile.txt"))

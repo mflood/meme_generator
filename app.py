@@ -26,19 +26,13 @@ def setup():
     except FileExistsError:
         pass
 
-    quote_files = find_files(directory="./_data/SimpleLines")
-    print(quote_files)
-
-    quotes: List[QuoteModel] = []
-    for path in quote_files:
-        if Ingestor.can_ingest(path):
-            file_quotes = Ingestor.parse(path)
-            quotes.extend(file_quotes)
+    quote_files: List[str] = find_files(directory="./_data/SimpleLines")
+    quotes: List[QuoteModel] = Ingestor.parse_files(quote_files)
 
     # Get all image files in the photos directory
     images_path = "./_data/photos"
-    imgs = find_image_files(directory=images_path)
-    return quotes, imgs
+    image_files = find_image_files(directory=images_path)
+    return quotes, image_files
 
 
 quotes, imgs = setup()
@@ -56,7 +50,7 @@ def meme_rand():
     img = random.choice(imgs)
     quote = random.choice(quotes)
     path = meme_engine.make_meme(
-        source_image_path=img, quote_body=quote.body, quote_author=quote.author
+        img_path=img, text=quote.body, author=quote.author
     )
     return render_template("meme.html", path=path)
 
@@ -87,7 +81,7 @@ def meme_post():
                 f.write(response.content)
 
             path = meme_engine.make_meme(
-                source_image_path=tmp_image_path, quote_body=body, quote_author=author
+                img_path=tmp_image_path, text=body, author=author
             )
             return render_template("meme.html", path=path)
 
