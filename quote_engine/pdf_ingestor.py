@@ -1,6 +1,6 @@
 
-from ingest.ingestor_interface import IngestorInterface
-from ingest.models import QuoteModel
+from quote_engine.ingestor_interface import IngestorInterface
+from quote_engine.models import QuoteModel
 
 import subprocess
 import tempfile
@@ -59,7 +59,7 @@ class PdfIngestor(IngestorInterface):
 
 
 if __name__ == "__main__":
-    # PYTHONPATH=`pwd` python ingest/pdf_ingestor.py 
+    # PYTHONPATH=`pwd` python quote_engine/pdf_ingestor.py 
     print(PdfIngestor.parse(path='_data/DogQuotes/DogQuotesPDF.pdf'))
     print(PdfIngestor.parse(path='_data/SimpleLines/SimpleLines2.pdf'))
     print(PdfIngestor.parse(path='_data/SimpleLines/SimpleLines.pdf'))

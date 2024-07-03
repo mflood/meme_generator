@@ -1,7 +1,7 @@
 
 import csv
-from ingest.ingestor_interface import IngestorInterface
-from ingest.models import QuoteModel
+from quote_engine.ingestor_interface import IngestorInterface
+from quote_engine.models import QuoteModel
 
 from typing import List
 

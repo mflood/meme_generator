@@ -2,13 +2,13 @@
 import os
 
 from typing import List
-from ingest.models import QuoteModel
+from quote_engine.models import QuoteModel
 
-from ingest.ingestor_interface import IngestorInterface
-from ingest.txt_ingestor import TxtIngestor
-from ingest.csv_ingestor import CsvIngestor
-from ingest.pdf_ingestor import PdfIngestor
-from ingest.docx_ingestor import DocxIngestor
+from quote_engine.ingestor_interface import IngestorInterface
+from quote_engine.txt_ingestor import TxtIngestor
+from quote_engine.csv_ingestor import CsvIngestor
+from quote_engine.pdf_ingestor import PdfIngestor
+from quote_engine.docx_ingestor import DocxIngestor
 
 class Ingestor(IngestorInterface):
 
