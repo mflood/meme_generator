@@ -1,12 +1,12 @@
-
-
 from dataclasses import dataclass
+
 
 @dataclass
 class QuoteModel:
     """
     Represents a quote
     """
+
     body: str
     author: str
 
@@ -15,12 +15,15 @@ class QuoteModel:
 
     def __eq__(self, other):
         if isinstance(other, QuoteModel):
-            return (self.body.lower() == other.body.lower() and
-                    self.author.lower() == other.author.lower())
+            return (
+                self.body.lower() == other.body.lower() and
+                self.author.lower() == other.author.lower()
+            )
         return False
 
     def __hash__(self):
         return hash((self.body.lower(), self.author.lower()))
+
 
 if __name__ == "__main__":
 
