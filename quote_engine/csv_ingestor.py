@@ -1,14 +1,13 @@
-
 import csv
+from typing import List
+
 from quote_engine.ingestor_interface import IngestorInterface
 from quote_engine.models import QuoteModel
-
-from typing import List
 
 
 class CsvIngestor(IngestorInterface):
 
-    @classmethod    
+    @classmethod
     def can_ingest(cls, path: str) -> bool:
         return path.lower().endswith(".csv")
 
@@ -19,10 +18,11 @@ class CsvIngestor(IngestorInterface):
             reader = csv.DictReader(handle)
             for row in reader:
                 quote = QuoteModel(
-                    body=row['body'].strip().strip('"'),
-                    author=row['author'].strip(),
+                    body=row["body"].strip().strip('"'),
+                    author=row["author"].strip(),
                 )
                 quote_list.append(quote)
         return quote_list
+
 
 # end
