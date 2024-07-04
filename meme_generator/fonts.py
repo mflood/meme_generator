@@ -20,12 +20,16 @@ class FontId(Enum):
     """
 
     K_LILITA_ONE_REGULAR = "k_lilita_one_regular"
+    K_MERRIWEATHER_REGULAR = "k_merriweather_regular"
 
 
 _FONT_PATHS: Dict[FontId, str] = {
     FontId.K_LILITA_ONE_REGULAR: os.path.join(
         _FONTS_DIR, "Lilita_One", "LilitaOne-Regular.ttf"
-    )
+    ),
+    FontId.K_MERRIWEATHER_REGULAR: os.path.join(
+        _FONTS_DIR, "Merriweather", "Merriweather-Regular.ttf"
+    ),
 }
 
 
