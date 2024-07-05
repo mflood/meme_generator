@@ -10,10 +10,13 @@ from quote_engine.ingestor import Ingestor
 from quote_engine.models import QuoteModel
 from meme_generator.meme_engine import MemeEngine
 from utils.file import find_files, find_image_files
+from utils.logging import init_logging, logger
+import logging
 
 app = Flask(__name__)
 
 
+init_logging(level=logging.INFO)
 OUTPUT_DIR = "./static"
 meme_engine = MemeEngine.make_default_engine(output_directory=OUTPUT_DIR)
 
