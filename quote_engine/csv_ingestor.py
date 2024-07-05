@@ -1,8 +1,9 @@
 import csv
 from typing import List
 
-from quote_engine.ingestor_interface import IngestorInterface
+from quote_engine.ingestor_interface import IngestorInterface, InvalidQuoteLineError
 from quote_engine.models import QuoteModel
+from utils.logging import logger
 
 
 class CsvIngestor(IngestorInterface):
@@ -13,6 +14,9 @@ class CsvIngestor(IngestorInterface):
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
+
+        logger.debug("%s - extracting quotes from  %s", cls.__name__, path)
+
         quote_list = []
         with open(path, "r", encoding="utf-8") as handle:
             reader = csv.DictReader(handle)

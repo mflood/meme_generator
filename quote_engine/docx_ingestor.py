@@ -2,8 +2,9 @@ from typing import List
 
 from docx import Document
 
-from quote_engine.ingestor_interface import IngestorInterface
+from quote_engine.ingestor_interface import IngestorInterface, InvalidQuoteLineError
 from quote_engine.models import QuoteModel
+from utils.logging import logger
 
 
 class DocxIngestor(IngestorInterface):
@@ -14,31 +15,9 @@ class DocxIngestor(IngestorInterface):
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
+        logger.debug("%s - extracting quotes from  %s", cls.__name__, path)
         document = Document(path)
+        lines = [paragraph.text for paragraph in document.paragraphs]
+        return IngestorInterface.parse_lines(lines=lines)
 
-        # Initialize an empty list to hold quote/author pairs
-        quotes = []
-
-        # Iterate over each paragraph in the document
-        for paragraph in document.paragraphs:
-            text = paragraph.text.strip()
-
-            if not text or " - " not in text:
-                continue
-            try:
-                # Split only at the last ' - '
-                body, author = text.rsplit("-", 1)
-                quote = QuoteModel(
-                    body=body.strip().strip('"'),
-                    author=author.strip(),
-                )
-                quotes.append(quote)
-            except ValueError:
-                print(f"Could not parse: {text}")
-        return quotes
-
-
-if __name__ == "__main__":
-    print(DocxIngestor.can_ingest("myfile.txt"))
-    print(DocxIngestor.can_ingest("myfile.csv"))
-    print(DocxIngestor.can_ingest("myfile.pdf"))
+# end

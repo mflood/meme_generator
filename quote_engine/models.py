@@ -16,8 +16,8 @@ class QuoteModel:
     def __eq__(self, other):
         if isinstance(other, QuoteModel):
             return (
-                self.body.lower() == other.body.lower() and
-                self.author.lower() == other.author.lower()
+                self.body.lower() == other.body.lower()
+                and self.author.lower() == other.author.lower()
             )
         return False
 

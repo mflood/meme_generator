@@ -6,6 +6,7 @@ from quote_engine.docx_ingestor import DocxIngestor
 from quote_engine.ingestor_interface import IngestorInterface
 from quote_engine.models import QuoteModel
 from quote_engine.pdf_ingestor import PdfIngestor
+from utils.logging import logger
 from quote_engine.txt_ingestor import TxtIngestor
 
 
@@ -16,6 +17,7 @@ class UnsupportedFileTypeError(ValueError):
 class Ingestor(IngestorInterface):
 
     ingestors = [TxtIngestor, CsvIngestor, PdfIngestor, DocxIngestor]
+    # ingestors = [TxtIngestor]
 
     @classmethod
     def can_ingest(cls, path: str) -> bool:
@@ -28,7 +30,7 @@ class Ingestor(IngestorInterface):
     def parse(cls, path: str) -> List[QuoteModel]:
         for ingestor in Ingestor.ingestors:
             if ingestor.can_ingest(path):
-                print(f"using {ingestor} to parse {path}")
+                logger.debug(f"using {ingestor} to parse {path}")
                 return ingestor.parse(path)
 
         file_type = Path(path).suffix[1:]
@@ -42,6 +44,7 @@ class Ingestor(IngestorInterface):
         for path in path_list:
             if Ingestor.can_ingest(path):
                 file_quotes = Ingestor.parse(path)
+                logger.info("Extracted %d quotes from %s", len(file_quotes), path)
                 quotes.extend(file_quotes)
         unique_quotes = list(set(quotes))
         return unique_quotes

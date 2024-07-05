@@ -3,8 +3,9 @@ import subprocess
 import tempfile
 from typing import List
 
-from quote_engine.ingestor_interface import IngestorInterface
+from quote_engine.ingestor_interface import IngestorInterface, InvalidQuoteLineError
 from quote_engine.models import QuoteModel
+from utils.logging import logger
 
 
 def _convert_pdf_to_text(pdf_path: str) -> List[str]:
@@ -42,23 +43,17 @@ class PdfIngestor(IngestorInterface):
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
-        quote_list = []
+        """
+        Concrete implementation of IngestorInterface method
+
+        Params:
+            path: the path to the pdf file
+
+        Returns
+            list of QuoteModel extracted from the file
+        """
+        logger.debug("%s - extracting quotes from  %s", cls.__name__, path)
         lines = _convert_pdf_to_text(pdf_path=path)
-        for row in lines:
-            if "-" not in row:
-                continue
-            body, author = row.rsplit("-", 1)
-            quote = QuoteModel(
-                body=body.strip().strip('"'),
-                author=author.strip(),
-            )
-            quote_list.append(quote)
+        return IngestorInterface.parse_lines(lines=lines)
 
-        return quote_list
-
-
-if __name__ == "__main__":
-    # PYTHONPATH=`pwd` python quote_engine/pdf_ingestor.py
-    print(PdfIngestor.parse(path="_data/DogQuotes/DogQuotesPDF.pdf"))
-    print(PdfIngestor.parse(path="_data/SimpleLines/SimpleLines2.pdf"))
-    print(PdfIngestor.parse(path="_data/SimpleLines/SimpleLines.pdf"))
+# end
