@@ -6,6 +6,10 @@ from quote_engine.models import QuoteModel
 from utils.logging import logger
 
 
+class InvalidCsvFileError(Exception):
+    """Raised when the csv file is not in the expected format"""
+
+
 class CsvIngestor(IngestorInterface):
 
     @classmethod
@@ -21,11 +25,16 @@ class CsvIngestor(IngestorInterface):
         with open(path, "r", encoding="utf-8") as handle:
             reader = csv.DictReader(handle)
             for row in reader:
-                quote = QuoteModel(
-                    body=row["body"].strip().strip('"'),
-                    author=row["author"].strip(),
-                )
-                quote_list.append(quote)
+                try:
+                    quote = QuoteModel(
+                        body=row["body"].strip().strip('"'),
+                        author=row["author"].strip(),
+                    )
+                    quote_list.append(quote)
+                except AttributeError as error:
+                    logger.error(error)
+                    raise InvalidCsvFileError(error) from error
+
         return quote_list
 
 

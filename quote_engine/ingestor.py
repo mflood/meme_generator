@@ -6,8 +6,8 @@ from quote_engine.docx_ingestor import DocxIngestor
 from quote_engine.ingestor_interface import IngestorInterface
 from quote_engine.models import QuoteModel
 from quote_engine.pdf_ingestor import PdfIngestor
-from utils.logging import logger
 from quote_engine.txt_ingestor import TxtIngestor
+from utils.logging import logger
 
 
 class UnsupportedFileTypeError(ValueError):
@@ -17,7 +17,6 @@ class UnsupportedFileTypeError(ValueError):
 class Ingestor(IngestorInterface):
 
     ingestors = [TxtIngestor, CsvIngestor, PdfIngestor, DocxIngestor]
-    # ingestors = [TxtIngestor]
 
     @classmethod
     def can_ingest(cls, path: str) -> bool:

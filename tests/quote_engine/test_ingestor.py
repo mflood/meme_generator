@@ -1,18 +1,22 @@
-import pytest
 from pathlib import Path
+
+import pytest
+
 from quote_engine.ingestor import Ingestor
 from quote_engine.models import QuoteModel
+
 
 @pytest.fixture
 def mock_txt_file(tmp_path):
     lines = [
         '"Life is beautiful" - Anonymous\n',
-        '"To be or not to be" - Shakespeare\n'
+        '"To be or not to be" - Shakespeare\n',
     ]
     path = tmp_path / "test.txt"
     with open(path, "w", encoding="utf-8") as f:
         f.writelines(lines)
     return path
+
 
 def test_can_ingest(mock_txt_file):
     assert Ingestor.can_ingest(str(mock_txt_file)) == True
@@ -21,6 +25,7 @@ def test_can_ingest(mock_txt_file):
     assert Ingestor.can_ingest("test.docx") == True
     assert Ingestor.can_ingest("test.bmp") == False
 
+
 def test_parse(mock_txt_file):
     quotes = Ingestor.parse(str(mock_txt_file))
     assert len(quotes) == 2
@@ -28,6 +33,7 @@ def test_parse(mock_txt_file):
     assert quotes[0].author == "Anonymous"
     assert quotes[1].body == "To be or not to be"
     assert quotes[1].author == "Shakespeare"
+
 
 def test_parse_files(mock_txt_file):
     paths = [str(mock_txt_file)]
@@ -42,6 +48,6 @@ def test_parse_files(mock_txt_file):
     assert "Anonymous" in authors
     assert "Shakespeare" in authors
 
+
 if __name__ == "__main__":
     pytest.main()
-

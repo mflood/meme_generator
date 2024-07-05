@@ -56,4 +56,5 @@ class PdfIngestor(IngestorInterface):
         lines = _convert_pdf_to_text(pdf_path=path)
         return IngestorInterface.parse_lines(lines=lines)
 
+
 # end

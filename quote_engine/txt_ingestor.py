@@ -1,7 +1,7 @@
 from typing import List
 
-from quote_engine.models import QuoteModel
 from quote_engine.ingestor_interface import IngestorInterface, InvalidQuoteLineError
+from quote_engine.models import QuoteModel
 from utils.logging import logger
 
 

@@ -20,4 +20,5 @@ class DocxIngestor(IngestorInterface):
         lines = [paragraph.text for paragraph in document.paragraphs]
         return IngestorInterface.parse_lines(lines=lines)
 
+
 # end

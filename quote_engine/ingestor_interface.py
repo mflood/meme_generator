@@ -4,6 +4,7 @@ from typing import List
 from quote_engine.models import QuoteModel
 from utils.logging import logger
 
+
 class InvalidQuoteLineError(ValueError):
     """
     raised when a line of text is not parseable as a QuoteModel
@@ -60,5 +61,6 @@ class IngestorInterface(ABC):
                 logger.debug(f"%s skipping line %s", cls.__name__, idx + 1)
 
         return quotes
+
 
 # end
