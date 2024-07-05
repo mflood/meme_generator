@@ -1,10 +1,13 @@
 
 
-TODO: the README should include an overview of the project
-TODO: the README should include sinstructions for  setting up and running the program
-TODO: t=he README should include a brief description of the roles and respobsibilities 
-of all sub-modules including dependencies  and examples of how to use the model
+# Meme Generator
 
+
+## Overview
+
+The Meme Generator Project combines a quote with an imgae to generate a meme. It includes a flask app and a command line tool.
+The flask app can generate random memes from a collection of quotes and images, or the user can provide there own quote
+and image to have a custom meme generated.
 
 ## Setup
 
@@ -95,6 +98,10 @@ print(f"meme image generated at {meme_output_path}")
 ```
 
 
-# Attributions
-https://fonts.google.com/selection
+## Attributions
 
+- https://fonts.google.com/
+
+## future improvements
+
+- https://cloud.ibm.com/services/text-to-speech/
